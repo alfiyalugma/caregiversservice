@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+Appointments
+{% endblock %}
+{% block content %}
+
+{% if logged_user.profile_description == 'Member' %}
+<h2>Settings page for {{logged_user.given_name}}</h2>
+<h4>Change house rules:</h4>
+<div class="card shadow-sm" style="margin-top: 20px;">
+  <div class="card-body" style="display: flex; flex-direction: column; align-items: center; margin: 10px;">
+  <form style="width: 100%;" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form }}
+      <input type="text" class="form-control" id="floatingInput" name="new_house_rules" placeholder="Your new house rules" style="width: 100%; margin-top: 10px;">
+      <button type="submit" name="member_settings" style="width: 100%; margin-top: 10px;">Submit</button>
+  </form>
+</div>
+</div>
+{% endif %}
+
+{% if logged_user.profile_description == 'Caregiver' %}
+<h2>Settings page for {{logged_user.given_name}}</h2>
+<h4>Change hourly rate:</h4>
+<div class="card shadow-sm" style="">
+  <div class="card-body" style="display: flex; flex-direction: column; align-items: center; margin: 10px;">
+  <form style="width: 100%;" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form }}
+      <input type="number" class="form-control" id="floatingInput" name="new_hourly_rate" placeholder="Your new hourly rate" style="width: 100%; margin-top: 10px;">
+      <button type="submit" name="caregiver_settings" style="width: 100%; margin-top: 10px;">Submit</button>
+  </form>
+</div>
+</div>
+{% endif %}
+
+{% endblock %}

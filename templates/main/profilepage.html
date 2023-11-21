@@ -1,0 +1,100 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+Profile Page
+{% endblock %}
+
+{% block content %}
+<div class="album py-5 bg-body-tertiary">
+  <div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+      <div class="col-md-4">
+        <div class="card shadow-sm">
+          {% if profile.profile_description == "Caregiver" %}
+          <img class="card-img-top" src="{{ caregiver.photo.url }}" alt="User Profile Image">
+          {% endif %}
+          <div class="card-body">
+            <h3>{{ profile.given_name }}</h3><h3>{{ profile.surname }}</h3>
+            <h5>City: {{ profile.city }}</h5>
+            <h5>Email: {{ profile.email }}</h5>
+            <h5>Phone number: {{ profile.phone_number }}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            {% if profile.profile_description == "Caregiver" %}
+              <b>Gender: </b><p>{{ caregiver.gender }}</p>
+              <b>Caregiving type: </b><p>{{ caregiver.caregiving_type }}</p>
+              <b>Hourly rate: </b><p>{{ caregiver.hourly_rate }}</p>
+            {% endif %}
+            {% if profile.profile_description == "Member" %}
+              <b>Address: </b><p>{{ address.town }}, {{address.street}}, {{address.house_number}}</p>
+              <b>House rules: </b><p>{{ member.house_rules }}</p>
+            {% endif %}
+          </div>
+        </div>
+            {% if logged_user.profile_description == "Member" and other_user == None %}
+              <br>
+              <a class="btn btn-primary rounded-pill px-3" href="{% url 'create_application' %}">Create application</a>
+            {% endif %}
+            {% if logged_user.profile_description == "Member" and profile.profile_description == "Caregiver" %}
+              {% for job in hiring_jobs reversed %}
+                {% if job.required_caregiving_type == caregiver.caregiving_type %}
+                  <div class="card shadow-sm" style="margin-top: 20px;">
+                    <div class="card-body" style="display: flex; align-items: center; margin: 10px;">
+                      <p>{{ profile.given_name }} {{ profile.surname }} is matching for your "{{ job.required_caregiving_type }}" job,
+                      which was published on {{ job.date_posted }}. You can hire.</p>
+                      <form style="text-align:center; margin: 25px" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form }}
+                        <input type="hidden" name="applied_caregiver" value="{{ profile.user_id }}">
+                        <input type="hidden" name="applied_job" value="{{ job.job_id }}">
+                        <button type="submit" name="member_apply">Hire</button>
+                      </form>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+        {% for job in listed_jobs reversed %}
+        <div class="card shadow-sm" style="margin-top: 20px;">
+          <div class="card-body" style="display: flex; align-items: center; margin: 10px;">
+            <div class="movie-details" style="flex: 1;">
+              <h2 style="margin: 0;">Needed: <span style="font-weight: normal;">{{ job.required_caregiving_type }}</span></h2>
+              <h3 style="margin: 0;">Requirements: <span style="font-weight: normal;">{{ job.other_requirements }}</span></h3>
+              {% if logged_user.profile_description == "Caregiver" and profile.profile_description == "Member" %}
+                <br>
+                <form style="text-align:center; margin: 25px" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="hidden" name="applied_caregiver" value="{{ logged_user_id }}">
+                    <input type="hidden" name="applied_job" value="{{ job.job_id }}">
+                  {% if logged_user.caregiver.caregiving_type == job.required_caregiving_type %}
+                    <p>Your caregiving type matches the following job. You can apply!</p>
+                    <button type="submit" name="caregiver_apply">Apply</button>
+                  {% endif %}
+                </form>
+              {% endif %}
+              <br>
+              <p style="float: right; margin: 0;">{{ job.date_posted }}</p>
+              {% if logged_user.profile_description == "Member" and other_user == None %}
+                <form style="text-align:center; margin: 25px" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="hidden" name="job" value="{{ job.job_id }}">
+                    <button type="submit" name="delete_job">Delete</button>
+                </form>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}

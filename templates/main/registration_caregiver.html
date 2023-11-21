@@ -1,0 +1,54 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+Registration
+{% endblock %}
+
+{% block content %}
+<br><br>
+<main class="form-signin w-100 m-auto">
+
+	  <form style="width: 50%; margin: 0 auto;" method="POST" enctype="multipart/form-data">
+		  {% csrf_token %}
+		  {{ form }}
+	    <h1 class="h3 mb-3 fw-normal">Caregiver account creation</h1>
+	    <div class="col-12">
+		  <label for="image" class="form-label">Profile Pic</label>
+		  <input type="file" name="image" class="form-control" id="firstName">
+		</div>
+	    <div class="form-floating">
+	      <input type="text" class="form-control" id="floatingInput" name="city" placeholder="Your city">
+	      <label for="floatingInput">City</label>
+	    </div>
+	    <div class="form-floating">
+		    <input type="number" class="form-control" id="floatingInput" name="hourly_rate" placeholder="Your hourly rate">
+		    <label for="floatingInput">Hourly rate</label>
+	    </div>
+	    <div class="col-md-5">
+		  <label for="a1" class="form-label">Your gender</label>
+		  <select class="form-select" id="a1" name="gender" required="">
+			<option value="">Choose...</option>
+			<option value="Male">Male</option>
+			<option value="Female">Female</option>
+		  </select>
+		  <div class="invalid-feedback">
+			Please select your gender.
+		  </div>
+		</div>
+	    <div class="col-md-5">
+		  <label for="a1" class="form-label">Your caregiving type</label>
+		  <select class="form-select" id="a2" name="caregiving_type" required="">
+			<option value="">Choose...</option>
+			<option value="Care for Elder people">Care for Elder people</option>
+			<option value="Babysitter">Babysitter</option>
+			  <option value="Playmate for children">Playmate for children</option>
+		  </select>
+		  <div class="invalid-feedback">
+			Please select your caregiving type.
+		  </div>
+		</div>
+	    <button class="btn btn-primary w-100 py-2" type="submit">Continue</button>
+	  </form>
+</main>
+{% endblock %}

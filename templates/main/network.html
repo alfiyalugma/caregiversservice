@@ -1,0 +1,48 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+Find Users
+{% endblock %}
+{% block content %}
+
+<form style="text-align:center; margin: 25px" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <div>
+      <label for="a2" class="form-label">Your caregiving type</label>
+      <select class="form-select" id="a2" name="searched_type" required="">
+        <option value="">Choose...</option>
+        <option value="Care for Elder people">Care for Elder people</option>
+        <option value="Babysitter">Babysitter</option>
+          <option value="Playmate for children">Playmate for children</option>
+      </select>
+      <div class="invalid-feedback">
+        Please select your caregiving type.
+      </div>
+    </div>
+    <br>
+    <button type="submit" >Search</button>
+</form>
+{% if is_post_request %}
+{% if logged_user.profile_description == 'Member' %}
+{% for user in users %}
+<div class="card shadow-sm" style="margin: 20px auto 0; width: 75%;">
+  <div class="card-body" style="display: flex; align-items: center; margin: 10px;">
+      <a href="{% url 'profilepage_otheruser' user.caregiver_user.email %}" style="color: #000;">{{ user.caregiver_user.given_name }} {{ user.caregiver_user.surname }}</a>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+{% if logged_user.profile_description == 'Caregiver' %}
+{% for user in users %}
+<div class="card shadow-sm" style="margin: 20px auto 0; width: 75%;">
+  <div class="card-body" style="display: flex; align-items: center; margin: 10px;">
+      <a href="{% url 'profilepage_otheruser' user.member_user.email %}" style="color: #000;">{{ user.member_user.given_name }} {{ user.member_user.surname }}</a>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+</div>
+{% endif %}
+{% endblock %}

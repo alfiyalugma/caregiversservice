@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+Registration
+{% endblock %}
+
+{% block content %}
+<br><br>
+<main class="form-signin w-100 m-auto">
+
+	  <form style="width: 50%; margin: 0 auto;" method="POST">
+		  {% csrf_token %}
+		  {{ form }}
+	    <h1 class="h3 mb-3 fw-normal">Member account creation</h1>
+	    <div class="form-floating">
+	      <input type="text" class="form-control" id="floatingInput" name="city" placeholder="Your city">
+	      <label for="floatingInput">City</label>
+	    </div>
+	    <div class="form-floating">
+			<input type="text" class="form-control" id="floatingPassword" name="town" placeholder="Your town">
+			<label for="floatingPassword">Town</label>
+		</div>
+	    <div class="form-floating">
+	      <input type="text" class="form-control" id="floatingPassword" name="street" placeholder="Your street">
+	      <label for="floatingPassword">Street</label>
+	    </div>
+	    <div class="form-floating">
+		    <input type="text" class="form-control" id="floatingInput" name="house_number" placeholder="Your house number">
+		    <label for="floatingInput">House number</label>
+	    </div>
+	    <div class="form-floating">
+		    <input type="text" class="form-control" id="floatingInput" name="house_rules" placeholder="Your house rules">
+		    <label for="floatingInput">House rules</label>
+	    </div>
+	    <button class="btn btn-primary w-100 py-2" type="submit">Continue</button>
+	  </form>
+</main>
+{% endblock %}

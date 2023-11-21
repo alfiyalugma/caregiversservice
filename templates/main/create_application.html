@@ -1,0 +1,48 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+Create Application
+{% endblock %}
+
+{% block content %}
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+
+      <div>
+        <div>
+          <div class="card shadow-sm">
+              <div class="card-body">
+              <b class="card-text" style="font-size:160%">Create Application</b>
+                  <br><br>
+                  <form style="text-align:center" method="post">
+                      {% csrf_token %}
+                      {{ form }}
+                    <div>
+                      <label for="a2" class="form-label">Required caregiving type</label>
+                      <select class="form-select" id="a2" name="required_caregiving_type" required="">
+                        <option value="">Choose...</option>
+                        <option value="Care for Elder people">Care for Elder people</option>
+                        <option value="Babysitter">Babysitter</option>
+                          <option value="Playmate for children">Playmate for children</option>
+                      </select>
+                      <div class="invalid-feedback">
+                        Please select your required caregiving type.
+                      </div>
+                    </div>
+                    <br>
+                    <div>
+                        <label for="floatingInput">Other requirements</label>
+                        <br>
+                        <input type="text" name="other_requirements" id="floatingInput" placeholder="Specify your other requirements" style="width: 100%; height: 60px;">
+                    </div>
+                    <br><br>
+                    <button class="btn btn-primary w-75 py-2" type="submit" >Post</button>
+                  </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

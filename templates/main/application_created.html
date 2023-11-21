@@ -1,0 +1,16 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+Create Application
+{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm" style="margin: 20px auto 0; width: 75%;">
+  <div class="card-body" style="display: flex; align-items: center; margin: 10px;">
+      <h1>Congratulations! Application created!</h1>
+      <a class="btn btn-primary rounded-pill px-3" href="{% url 'profilepage' %}">Go back to profile page</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

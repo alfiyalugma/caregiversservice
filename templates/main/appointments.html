@@ -1,0 +1,77 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+Appointments
+{% endblock %}
+{% block content %}
+
+<h1>Here is your incoming appointments:</h1>
+
+{% if profile_description == 'Member' %}
+{% for appointment in appointments %}
+<div class="card shadow-sm" style="margin-top: 20px;">
+  <div class="card-body" style="flex-direction: column; align-items: center; margin: 10px;">
+  <h4>{{appointment.caregiver_user.given_name}} {{appointment.caregiver_user.surname}}</h4>
+  <br>
+  <p>Gender: {{appointment.caregiver_user.caregiver.gender}}. Hourly rate: {{appointment.caregiver_user.caregiver.hourly_rate}}</p>
+  <br>
+  <form style="text-align:center; margin: 25px" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form }}
+      <input type="hidden" name="appointing_caregiver" value="{{ appointment.caregiver_user.user_id }}">
+      <input type="hidden" name="appointing_job" value="{{ appointment.job_id }}">
+      <b>Work hours: </b>
+      <input type="number" name="work_hours" id="quantity" min="0" step="1" value="6">
+      <div class="col-md-5">
+		  <label for="a1" class="form-label">Your decision</label>
+		  <select class="form-select" id="a1" name="status" required="">
+			<option value="">Choose...</option>
+			<option value="Accepted">Accept</option>
+			<option value="Rejected">Reject</option>
+		  </select>
+		  <div class="invalid-feedback">
+			Please select your decision.
+		  </div>
+		</div>
+      <button type="submit" name="member_submit">Submit</button>
+  </form>
+</div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if profile_description == 'Caregiver' %}
+{% for appointment in appointments %}
+<div class="card shadow-sm" style="margin-top: 20px;">
+  <div class="card-body" style="flex-direction: column; align-items: center; margin: 10px;">
+  <h4>{{appointment.job.member_user.given_name }} {{ appointment.job.member_user.surname }}</h4>
+  <br>
+  <p>Other requirements: {{appointment.job.other_requirements}}</p>
+  <br>
+  <form style="text-align:center; margin: 25px" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form }}
+      <input type="hidden" name="appointing_member" value="{{ appointment.job.member_user.user_id }}">
+      <input type="hidden" name="appointing_job" value="{{ appointment.job_id }}">
+      <b>Work hours: </b>
+      <input type="number" name="work_hours" id="quantity" min="0" step="1" value="6">
+      <div class="col-md-5">
+		  <label for="a1" class="form-label">Your decision</label>
+		  <select class="form-select" id="a1" name="status" required="">
+			<option value="">Choose...</option>
+			<option value="Accepted">Accept</option>
+			<option value="Rejected">Reject</option>
+		  </select>
+		  <div class="invalid-feedback">
+			Please select your decision.
+		  </div>
+		</div>
+      <button type="submit" name="caregiver_submit">Submit</button>
+  </form>
+</div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% endblock %}
